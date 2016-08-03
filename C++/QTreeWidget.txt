@@ -1,0 +1,1 @@
+在QTreeWidgetItem中，有一个独特的方法，void setData(int column, int role, QVariant value)；此方法设置一个辅助值，可以利用此值作为每个Item的唯一标识,virtual QVariant data(int column, int role) const;便可以得到该数值。

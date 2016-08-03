@@ -1,0 +1,10 @@
+更改图片大小：ctrl+alt+I
+更改画布大小：ctrl+alt+C
+
+alt+delete 更改前景色
+ctrl+delete 更改背景色
+d 切换到之前的颜色
+x 前背景色切换
+
+Ctrl+t自由变换
+alt 在选取中可以作为中心进行扩展

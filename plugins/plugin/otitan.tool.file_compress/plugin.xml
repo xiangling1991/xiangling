@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plugin>
+  <id>otitan.tool.file_compress</id>
+  <version>1.0</version>
+  <library>otitan.tool.file_compress.dll</library>
+  <name>文件压缩</name>
+  <category>交互插件.文件压缩</category>
+  <owner>航天泰坦</owner>
+  <description></description>
+  <type>ribbon.command</type>
+  <ribbon>
+    <command>
+        <title>文件压缩</title>
+        <style>Under</style>
+        <tooltip>文件压缩</tooltip>
+        <icon>file_compress.png</icon>
+        <group>数据浏览.工具</group>
+    </command>
+  </ribbon>
+</plugin>

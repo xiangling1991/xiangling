@@ -1,0 +1,61 @@
+/****************************************************************************************
+kruskal（克鲁斯卡尔） 算法:
+求加权连通图的最小生成树的算法；
+使用的准则：贪婪准则--> 从剩下的边中选择一条不会产生环路的具有最小耗费的边加入已选择的边的集合中。
+步骤：
+	1->先构造一个只含n（图的顶点数）顶点，边为空的子图。将每个点看成一棵只有根的树，则该子图为n棵树组成的森林。
+	2->对边的权重进行排序。
+	3->选择最小权重的边，并将边的两点合成一棵树。
+	4->若出现边落在同一棵树上，则抛弃该边，重复3步骤，直到所有边都遍历完。
+	*************************************************************************************/
+
+//本程序用到了并查集的基本操作，不会并查集的请自行学习或参考本代码学习
+//getfa为查询祖先，merge为将集合合并，same是判断两个点是否处于同一集合
+//getfa操作中使用了路径压缩即return fa[x] = getfa(fa[x])，这样可以减小并查集森林退化所带来的时间复杂度
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#define MAXN_E 100000
+#define MAXN_V 100000
+using namespace std;
+struct Edge{
+    int fm,to,dist;
+}e[MAXN_E];
+int fa[MAXN_V],n,m;
+bool cmp(Edge a,Edge b){
+    return a.dist < b.dist;
+}
+int getfa(int x){//getfa是在并查集森林中找到x的祖先
+    if(fa[x]==x) return fa[x];
+    else return fa[x] = getfa(fa[x]);
+}
+int same(int x,int y){
+    return getfa(x)==getfa(y);
+}
+void merge(int x,int y){
+    int fax=getfa(x),fay=getfa(y);
+    fa[fax]=fay;
+}
+int main(){
+    scanf("%d%d",&n,&m);//n为点数，m为边数
+    for(int i=1;i<=m;i++)
+    	scanf("%d%d%d",&e[i].fm,&e[i].to,&e[i].dist);//用边集数组存放边，方便排序和调用
+    sort(e+1,e+m+1,cmp);//对边按边权进行升序排序
+    for(int i=1;i<=n;i++)
+    	fa[i]=i;
+    int rst=n,ans=0;//rst表示目前的点共存在于多少个集合中，初始情况是每个点都在不同的集合中
+    for(int i=1;i<=m && rst>1;i++)
+    {
+        int x=e[i].fm,y=e[i].to;
+        if(same(x,y)) continue;//same函数是查询两个点是否在同一集合中
+        else
+        {
+            merge(x,y);//merge函数用来将两个点合并到同一集合中
+            rst--;//每次将两个不同集合中的点合并，都将使rst值减1
+            ans+=e[i].dist;//这条边是最小生成树中的边，将答案加上边权
+        }
+    }
+    printf("%d\n",ans);
+    return0;
+}

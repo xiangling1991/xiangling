@@ -1,0 +1,94 @@
+中误差阈值		The error threshold
+平均中误差		The average error
+The value of the cumulative Crop 最值累计裁剪
+Loading statistics 载入统计值
+设置影像背景值并显示为 Setting values and display
+多波段彩色		Multi-band color
+单波段灰度		Single-band grayscale
+单波段伪彩色	Single-band pseudo color
+您选择的矢量图层类型\"显示设置\"功能暂未支持，更多功能将在后续版本中添加
+		Vector layers type you select \ "Display Settings \" function does not Support,more functions will be added in subsequent editions
+
+计算基于：项目坐标参照系已关闭，画布单位默认为(英尺)，所有转换均由英尺得到。
+		Project coordinate reference system is turned off, the default unit to the canvas (feet),all conversion by foot to get
+
+当前长度计算根据地理坐标经纬度得到.The current length is calculated based on the geographical latitude and longitude coordinates
+
+
+The image has not been established pyramid data for browsing
+	该影像尚未建立用于浏览的金字塔数据
+
+字段属性名不能为空  Field property name can not be empty
+
+布尔 Bool
+短整型 Short
+整型Integer
+浮点型Float
+双精度浮点型Double
+字符串 String
+日期Date
+时间Time
+二进制Binary
+文本Text
+
+
+
+
+
+国家标准分幅活动开始执行	Begin to execute the national standard division range
+
+Begin to execute the raster to other format 影像格式转换活动开始执行
+
+没有指定输入影像文件  Does not specify the input image file
+根据输入影像计算分幅编号失败   Based on the input image computing points number failed
+
+准备提交作业到集群   Ready to submit a job to the cluster
+
+镶嵌线生成活动开始执行	Begin to execute the generate Mosaic-line
+
+无法打开输入影像 %1 获取无效数据值  Unable to open input image %1 to get no data value.
+
+输入影像 %1 没有包含无效数据值的设定。The input image %1 does not contain no data value set.
+
+没有指定输入的全色影像文件。Do not specify panchromatic image file
+
+多光谱影像的数目必须同全色影像相同，或者为1。The number of multi-spectral images with panchromatic images must be the same or 1.
+
+没有指定镶嵌线文件  Does not specify the Mosaic-line file.
+
+Unrecognized output format identification   无法识别的输出格式标识
+
+计算并行镶嵌任务分配情况   Computing parallel task allocation
+
+无法访问输入影像:  Unable to access the input image:
+
+镶嵌结果影像大小为 Mosaic result image size is  total has %3% tasks.
+
+镶嵌块  Mosaic block
+
+完成金字塔   
+
+根据输入影像计算分幅编号失败  Framing number calculated based on the input image fails
+
+影像匹配控制点检查活动开始执行 Begin to execute the image matching GCP inspection activities
+
+Unable to open the input DEM data to extract information  无法打开输入DEM数据提取信息
+
+DEM data input reference information is not specified 输入DEM数据没有指定参考系信息
+
+pansharp 融合 --Pansharpening
+
+
+影像镶嵌结果检查活动开始执行   Begin to execute the image mosaic checking
+
+无效的工程类型！卫星正射校正活动仅能用于卫星数据处理工程中。 Invalid project type!Satellite Orthorectification actor can only be used for satellite data processing projects
+
+没有指定控制点文件，将使用无控正射校正算法。GCP file does not specify ,will use of non-controlled Orthorectification algorithms.
+
+没有指定正射影像分辨率。No specify the the resolution orthophotos.
+
+卫星影像空三区域网平面平差活动开始执行
+
+卫星空三平差活动仅能运行在卫星工程中  Satellite aerial triangulation adjustment activities only run in the satellite project
+
+卫星影像自由网平差活动仅能运行在卫星工程中 Satellite images free network adjustment actor only run in the satellite project

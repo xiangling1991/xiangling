@@ -1,0 +1,71 @@
+Boost 序列化模式：侵入式(intrusive)和非侵入式(non-intrusive)
+1 侵入式：
+    直接将序列化的功能函数嵌入到当前类中，eg：
+    class CMyData {
+    private:
+/***(~O~)*/
+        friend class boost::serialization::access;
+        
+        template<class Arcive>
+        void serialize(Archive& ar, const unsigned int version) {
+            ar & _tag;
+            ar & _text;
+        }
+/***(~O~)*/
+    public:
+        CMyData():_tag(0),_text(""){}
+        CMyData(int tag,std::string text):_tag(tag),_text(text){}
+        
+        int GetTag() const {return _tag;}
+        std::string GetText() const {return _text;}
+    private:
+        int _tag;
+        std::string _text;
+    }
+
+2 非侵入式
+        class CMyData {     
+
+    public:
+        CMyData():_tag(0),_text(""){}
+        CMyData(int tag,std::string text):_tag(tag),_text(text){}
+        
+        int GetTag() const {return _tag;}
+        std::string GetText() const {return _text;}
+        public:
+        int _tag;
+        std::string _text;
+    }
+    
+    namespace boost{
+        namespace serialization {
+            template<class Arcive>
+            void serialize(Archive& ar, CMyData& d,const unsigned int version) {
+                ar & d._tag;  
+                ar & d._text;
+            }
+        }
+    }
+    
+    如果有继承需要先构造基类：
+        ar & boost::serialization::base_object<CMyData>(d);
+    如果序列化指针，有多态，还需要添加宏：BOOST_CLASS_EXPORT_GUID(子类,key),以及给基类的析构函数加上virtual 关键字，此时序列化根据是否有virtual来判断是否为多态。
+    如：BOOST_CLASS_EXPORT_GUID(CMyData_child,"CMyData_child")
+    
+    序列化函数里面也可以为数组：
+        class CMyData_Container {
+            
+        private:
+            friend class boost::serialization::access;
+            
+            template<class Archive>
+            void serialize(Archive &ar, const unsigned int version) {
+                ar & pointer;
+            }
+
+        public:
+            CMyData* pointer[3];
+        }
+
+
+    

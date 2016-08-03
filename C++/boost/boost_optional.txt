@@ -1,0 +1,55 @@
+optional 库使用"容器"语义，包装了"可能产生无效值"的对象，实现了"未初始化"的概念.
+包含头文件<boost/optional.hpp>
+using namespace boost;
+
+template <class T>
+class optional
+{
+public:
+	optional();
+	optional(T const& v);
+	optional(bool condition, T v);
+	optional& operator=(T const& rhs);
+
+	T* operator->();
+	T& operator*();
+	T& get();//得到该元素的引用
+	T* get_ptr();//得到该元素的指针
+	T const& get_value_or(T const& default) const;
+	
+	bool operator!() const;
+};
+
+成员函数get_value_or(default)是一个特别的访问函数，可以保证返回一个有效值，如果optional初始化，返回内部的一个值，否则返回default值。
+
+optional还支持比较运算，包括== 、!=、< 、<=、> 、>=.且为深比较，同时加入了对未初始化情况的判断。
+
+
+make_optional()类似于make_pair()、make_shared()等工厂函数,但如果要返回的是对象的引用optional<T&>，则不能使用该方法。
+
+BOOST_AUTO(result,expr),自动推到结果类型
+
+in_place_factory();就地创建临时的对象 #include <boost/utility/in_place_factory.hpp>
+eg:
+	optional<string> ops(in_place("jjjjjjjjjj"));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

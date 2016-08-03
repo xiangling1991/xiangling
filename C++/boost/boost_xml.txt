@@ -1,0 +1,18 @@
+boost的xml解析库如同大多数xml解析库相似，都是将文件以树的形式读取，但操作起来更为简单
+
+包含头文件#include <boost/property_tree/ptree.hpp>
+	using namespace boost::property_tree;
+
+ptree pt;作为树的根
+read_xml(filename,pt);读取整个xml文档
+ptree root = pt.get_child("root");读取root节点信息
+ptree迭代器ptree::iterator
+ptree::iterator it = root.begin();it != root.end();it++
+
+ptree st = it->second;指向节点的数据区
+st.data()可得到该数据
+std::string get<节点或属性名称>() 可得该点的数据
+
+
+write_xml(filename,ptree);写xml
+put(节点名称，数据);创建xml

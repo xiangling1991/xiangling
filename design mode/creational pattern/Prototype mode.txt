@@ -1,0 +1,38 @@
+原型模式:prototype
+提供一个原始的数据，使用原型模式对其进行拷贝，使用的是类的拷贝构造函数来实现
+class Prototype
+{
+public:
+	virtual Prototype* clone() = 0;
+};
+
+class Prototpye_1:public Prototype
+{
+public:
+	Prototype_1(){}
+	Prototype_1(Prototype_1& p_1){//实现}
+	Prototype* clone(){return new Prototype_1(*this);}
+};
+
+class Prototpye_2:public Prototype
+{
+public:
+	Prototype_2(){}
+	Prototype_2(Prototype_2& p_2){//实现}
+	Prototype* clone(){return new Prototype_2(*this);}
+};
+
+class Client
+{
+public:
+	void Operation(Prototype *prototype){p = prototype->clone();}
+private:
+	Prototype *p;
+};
+
+int main()
+{
+	Prototype* p = new Prototype();
+	Client client;
+	client.Operation(p);
+}

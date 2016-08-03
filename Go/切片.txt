@@ -1,0 +1,77 @@
+切片：
+s := [4]int{0, 1, 2, 3}
+s[0]得到第一个单元。
+s[i:j]:从第[i]个单元开始，长度是j - i,容量为 cap(s)-i,如果i是0，可以不写。
+	如果 j = len(s),也可不写。
+
+切片的创建：
+	make([]string, 0, 10)得到一个长度为0、容量为10的字符串切片。
+	make([]byte, 10)创建的字节片的长度和容量都是10
+
+	copy(t, o)把切片o的单元逐渐复制到切片t。
+
+eg:
+	var a = [...]int{0, 1, 3, 4}
+	var s = make([]int, 10)
+	var b = make([]byte, 8)
+	n1 := copy(s, a[0:])
+	n2 := copy(s, s[2:])
+	n3 := copy(b, "Hi")
+
+	append(t, o)把o添加在切片t的最后，并返回新的切片
+eg:
+	s0 := []int{0, 0}
+	s1 := append(s0, 2)
+	s2 := append(s1, 3, 4)
+	s3 := append(s2, s0...)
+	带省略号的变量还可以用作字符串，添加到切片中：
+	var b []byte
+	b = append(b, "hi"...)
+
+添加切片b:
+	a = append(a, b...)
+复制：
+	b = make([]T, len(a))
+	copy(b, a)
+删除[i:j]：
+	a = append(a[:i], a[j:]...)
+删除第i个元素：
+	a = append(a[:i],a[i+1:]...)
+扩展j个空元素：
+	a = append(a, make([]T, j)...)
+插入j个空元素：
+	a = append(a, append(make([]T, j), a[:i]...)...)
+插入元素x:
+	a = append(a[:i], append([]T{x}, a[i:]...)...)
+插入切片b:
+	a = append(a[:i], append(b, a[i:]...)...)
+弹出最后一个元素：
+	x, a = a[len(a) - ], a[:len(a) - 1]
+压入x:
+	a = append(a, x)
+
+
+结构体：使用type 给结构体类型命名，如net/url包中的URL：
+	type URL struct {
+		Raw		string
+		Scheme	string
+		...
+	}
+
+内置：
+	下划线补丁：
+	type T struct {
+		byte1 byte
+		_	  byte
+		byte3 byte
+	}
+
+	使用另一结构体作为该结构体项名
+	type D2 struct {x, y float32}
+	type D3 struct {
+		D2
+		z float32
+	}
+	var d2 = D2{2, 3}
+	d3 := D3{d2, 4}
+	结构体可以比较是否相等，不可比较大小。

@@ -1,0 +1,9 @@
+# redis的安装与配置
+
+1. 下载源文件:www.redis.io
+
+2. 进入源文件，执行make，进入src，（make test），执行make install
+会生成redis-server redis-cli 等可执行文件
+
+redis-cli -h server_address -p port -a passward可连接redis服务端
+

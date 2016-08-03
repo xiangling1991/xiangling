@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plugin-ui>
+  <ribbon>
+	<page>
+		<name>工具</name>
+		<disable>true</disable>
+	</page>
+	<page>
+		<name>数据浏览</name>
+		<group>
+			<name>增强</name>
+			<disable>true</disable>
+		</group>
+	</page>
+	<page>
+		<name>数据管理</name>
+		<group>
+			<name>AOI操作</name>
+			<plugins>
+				<plugin>otitan.ui.band_recombine</plugin>
+				<plugin>aoi_editor</plugin>
+				<plugin>aoi_crop</plugin>
+			</plugins>
+		</group>
+		<group>
+			<name>栅格数据</name>
+			<plugins>
+				<plugin>titan.raster.enhancement</plugin>
+				<plugin>titan.raster.build_overviews</plugin>
+				<separator/>
+				<plugin>otitan.ui.band_recombine</plugin>
+				<plugin>titan.raster.delete_data</plugin>
+				<plugin>titan.raster.copy_data</plugin>
+			</plugins>
+		</group>
+	</page>
+  </ribbon>
+</plugin-ui>

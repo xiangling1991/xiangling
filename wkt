@@ -1,0 +1,22 @@
+ESRI 的WKT格式：
+OGC的WKT 格式：OGC全称Open Geospatial Consortium，自称是一个非盈利的、国际化的、自愿协商的标准化组织，它的主要目的就是制定与空间信息、基于位置服务相关的标准
+
+OGRCoordinateTransformation类：
+    1.该类只能通过OGRCreateCoordinateTransformation函数来创建
+    2.该类的派生类OGRProj4CT，用来实现了OGRCoordinateTransformation中的方法,而调用的时候使用OGRCoordinateTransformation类，而不是OGRProj4CT类，具体的方法如下：
+    a.OGRCoordinateTransformation* (OGRSpatialReference* src,OGRSpatialReference* dest);
+    b.DestroyCT(OGRCoordinateTransformation *poCT);[静态函数],用来销毁OGRCoordinateTransformation 对象
+    c.virtual OGRSpatialReference*GetSourceCS();[pure virtual]用来获取该类内部的源空间参考
+    d.virtual OGRSpatialReference *GetTargetCS();[pure virtual]用来获取该类内部的目标空间参考
+    e.virtual int Transform(int nCount,double*x,double*y,double*z = NULL);[pure virtual]将制定的坐标点从源空间参考转换为目标空间参考。
+    f.virtual int Transform(int nCount,double*x,double*y,double*z = NULL,int *pabSuccess=NULL);[pure virtual]将制定的坐标点从源空间参考转换为目标空间参考。(pabSuccess表示                       该点是否转换成功)
+    
+    
+    OGRErr      SetGeogCS( const char * pszGeogName,                设置地理坐标系
+                           const char * pszDatumName,
+                           const char * pszEllipsoidName,
+                           double dfSemiMajor, double dfInvFlattening,
+                           const char * pszPMName = NULL,
+                           double dfPMOffset = 0.0,
+                           const char * pszUnits = NULL,
+                           double dfConvertToRadians = 0.0 );

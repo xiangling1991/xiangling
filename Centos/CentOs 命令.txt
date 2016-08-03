@@ -1,0 +1,547 @@
+在电脑常用操作中，我们经常会用到CentOS常用命令。所以，我们对一些经常使用又很重要的CentOS常用命令进行了全面的整理
+下面，就给大家介绍这些CentOS常用命令。 
+
+一：使用CentOS常用命令查看cpu 
+
+more /proc/cpuinfo | grep "model name" 
+grep "model name" /proc/cpuinfo 
+[root@localhost /]# grep "CPU" /proc/cpuinfo 
+model name : Intel(R) Pentium(R) Dual CPU E2180 @ 2.00GHz 
+model name : Intel(R) Pentium(R) Dual CPU E2180 @ 2.00GHz 
+如果觉得需要看的更加舒服 
+grep "model name" /proc/cpuinfo | cut -f2 -d: 
+
+二：使用CentOS常用命令查看内存 
+
+grep MemTotal /proc/meminfo grep MemTotal /proc/meminfo | cut -f2 -d: free -m |grep "Mem" | awk '{print $2}' 
+
+三：使用CentOS常用命令查看cpu是32位还是64位 
+
+查看CPU位数(32 or 64) 
+getconf LONG_BIT 
+
+四：使用CentOS常用命令查看当前linux的版本 
+
+more /etc/redhat-release 
+cat /etc/redhat-release 
+
+五：使用CentOS常用命令查看内核版本 
+
+uname -r 
+uname -a 
+
+六：使用CentOS常用命令查看当前时间 
+
+date上面已经介绍如何同步时间了 
+
+七：使用CentOS常用命令查看硬盘和分区 
+
+df -h 
+fdisk -l 
+也可以查看分区 
+du -sh 
+可以看到全部占用的空间 
+du /etc -sh 
+可以看到这个目录的大小 
+
+八：使用CentOS常用命令查看安装的软件包 
+
+查看系统安装的时候装的软件包 
+cat -n /root/install.log 
+more /root/install.log | wc -l 
+查看现在已经安装了那些软件包 
+rpm -qa 
+rpm -qa | wc -l 
+yum list installed | wc -l 
+不过很奇怪，我通过rpm，和yum这两种方式查询的安装软件包，数量并不一样。没有找到原因。 
+九：使用CentOS常用命令查看键盘布局 
+cat /etc/sysconfig/keyboard 
+cat /etc/sysconfig/keyboard | grep KEYTABLE | cut -f2 -d= 
+十：使用CentOS常用命令查看selinux情况 
+sestatus 
+sestatus | cut -f2 -d: 
+cat /etc/sysconfig/selinux 
+十一：使用CentOS常用命令查看ip，mac地址 
+在ifcfg-eth0 文件里你可以看到mac，网关等信息。 ifconfig cat /etc/sysconfig/network-scripts/ifcfg-eth0 | grep IPADDR cat /etc/sysconfig/network-scripts/ifcfg-eth0 | grep IPADDR | cut -f2 -d= ifconfig eth0 |grep "inet addr:" |awk '{print $2}'|cut -c 6- ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}' 查看网关 cat /etc/sysconfig/network 查看dns cat /etc/resolv.conf 十二：使用CentOS常用命令查看默认语言 
+echo $LANG $LANGUAGE 
+cat /etc/sysconfig/i18n 
+十二：使用CentOS常用命令查看所属时区和是否使用UTC时间 
+cat /etc/sysconfig/clock 
+十三：使用CentOS常用命令查看主机名 
+hostname 
+cat /etc/sysconfig/network 
+修改主机名就是修改这个文件，同时最好也把host文件也修改。 
+
+十四：使用CentOS常用命令查看开机运行时间 
+uptime 
+09:44:45 up 67 days, 23:32, ... 
+看来刚才确实是网段的问题，我的机器还是67天前开机的。 
+#系统资源使用情况 
+vmstat 1 -S m procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu------ r b swpd free buff cache si so bi bo in cs us sy id wa st 0 0 0 233 199 778 0 0 4 25 1 1 3 0 96 0 0 0 0 0 233 199 778 0 0 0 0 1029 856 13 1 86 0 0 
+
+十五：使用CentOS常用命令查看开机运行时间 
+uptime 
+09:44:45 up 67 days, 23:32, ... 
+看来刚才确实是网段的问题，我的机器还是67天前开机的。 
+#系统资源使用情况 
+1. vmstat 1 -S m 
+2. procs -----------memory---------- ---swap-- -----io---- --system-- -----cpu------ 
+3. r b swpd free buff cache si so bi bo in cs us sy id wa st 
+4. 0 0 0 233 199 778 0 0 4 25 1 1 3 0 96 0 0 
+5. 0 0 0 233 199 778 0 0 0 0 1029 856 13 1 86 0 0 
+6. 
+对大家推荐很好使用的Linux CentOS系统，像让大家对Linux CentOS系统有所了解，然后对Linux CentOS系统全面讲解介绍，希望对大家有用Linux CentOS常用的命令. 
+wget$ wget -r -np -nd http://example.com/packages/ 这条命令可以下载 http://example.com 网站上 packages 目录中的所有文件。Linux CentOS其中，-np 的作用是不遍历父目录，-nd 表示不在本机重新创建目录结构。 
+$ wget -r -np -nd --accept=iso http://example.com/centos-5/i386/ 与上一条命令相似，Linux CentOS但多加了一个 --accept=iso 选项，这指示 wget 仅下载 i386 目录中所有扩展名为 iso 的文件。你也可以指定多个扩展名，Linux CentOS只需用逗号分隔即可。 
+$ wget -i filename.txt 此命令常用于批量下载的情形，Linux CentOS把所有需要下载文件的地址放到 filename.txt 中，然后 wget 就会自动为你下载所有文件了。 Linux CentOS$ wget -c http://example.com/really-big-file.iso 这里所指定的 -c 选项的作用为断点续传。 
+$ wget -m -k (-H) http://www.example.com/ 该命令可用来镜像一个网站，wget 将对链接进行转换。Linux CentOS如果网站中的图像是放在另外的站点，那么可以使用 -H 选项。 
+
+
+VI 编辑命令命令模式 
+移动光标 
+[Ctrl] + [f] → 屏幕『向下』移动一页，相当于 [Page Down]按键 
+[Ctrl] + [b] → 屏幕『向上』移动一页，相当于 [Page Up] 按键 
+n<space> → n 表示『数字』。按下数字后再按空白鍵，光标会向右移动这一行的 n 个字元 
+0 → 数字『 0 』：移动到这一行的最前面字元处 
+$ → 移动到这一行的最后面字元处 
+G → 移动到这个文件的最后一行 
+nG → n 为数字。移动到这个文件的第 n 行(可配合 :set nu) 
+gg → 移动到这个文件的第一行，相当于 1G 
+n<Enter> → n 为数字。光标向下移动 n 行 
+Linux CentOS查找与替换 
+n → 『重复前一个查找的动作』 
+N → 与 n 刚好相反，为『反向』进行前一个查找动作 
+:n1,n2s/word1/word2/g → n1 与 n2 均为数字。在第 n1 与 n2 行之间查找 word1 字符串，并将该字符串替换为 word2。 
+如：在 1 到 9 行之间查找 eric4ever 并替换为 ERIC4EVER 则：『:1,9s/eric4ever/ERIC4EVER/g』 
+:1,$s/word1/word2/g → 从第一行到最后一行查找 word1 字符串，并将该字符串替换为 word2 
+:1,$s/word1/word2/gc → 从第一行到最后一行查找 word1 字符串，并将该字符窗替换为 word2，替换前显示提示对话框是否确认替换 
+
+
+Linux CentOS删除、复制与粘贴 
+x, X → 在一行字当中，x 为向后刪除一个字元 (相当于 [del] 按键)， 
+X 为向前刪除一个字元(相当于 [backspace] 按键) 
+dd → 刪除光标所在的那一整行 
+ndd → n 为数字。刪除光标所在的向下 n 列 
+yy → 复制光标所在的那一行 
+nyy → n 为数字。复制光标所在的向下 n 列 
+p, P → p 为将已复制的内容粘贴在光标下一行上，P 则为粘贴在光标的上一行 
+u → 还原前一个动作 
+[Ctrl]+r → 重做上一个动作 
+. → 小数点，意思是重复前一个动作 
+Linux CentOS编辑模式i, I → 插入：在目前的光标所在处插入输入的文字，已存在的文字会向后退； 其中， i 为『从目前光标所在处插入』， I 为『在目前所在行的第一個非空白字元处开始插入』a, A → a 为『从目前光标所在的下一个字元处开始插入』， A 为『从光标所在行的最后一个字元处开始插入』 
+o, O → o 为『在目前光标所在的下一行处插入新的一行』， O 为『在目前光标所在处的上一行插入新的一行』 
+r, R → r 为『取代光标所在的那一个字元』， R 为『一直取代光标所在的文字，直到按下 ESC 为止』 
+Esc → 退出编辑模式，回到一般模式中 
+Linux CentOS末行指令模式 
+:w → 将编辑的文件写入到硬盘上 
+:q → 退出 vi 
+:set nu → 显示行号 
+:set nonu → 取消显示行号 
+Linux CentOSvim 块操作 
+Ctrl+v 进入视图模式 
+<Esc>退出视图模式 
+在Ctrl+v 后: 
+<Dollar>+ A在块的每行末尾添加 
+I 插入 
+y 块抽取 
+p 块粘贴 
+c 修改 
+Linux centos已被广泛应用但是也在不断的更新，这里介绍Linux centos安装设置使用，帮助大家安装更新Linux centos系统手动配置Linux centos的IP地址 
+今天在vmware server上装了个centos-4.7（免费的redhat,是小红帽的的克隆版本，跟小红帽的版本是对应的）,其中ip安装时没设好，一般Linux centos的网卡IP地址是存放在文件中的，这个配置文件在/etc/sysconfig/network-scripts下， 
+名称分别为ifcfg-eth0,ifcfg-eth1....如果你有一块网卡，就只有ifcfg-eth0一个文件，如果你有两块或者两块以上的网卡，就会有ifcfg-eth1、ifcfg-eth2等文件的出现。 
+
+
+文件结构： 
+DEVICE=eth0 //指出设备名称 
+ONBOOT=yes//是否启动应用 
+BOOTPROTO=static //启动类型 静态 （默认dhcp） 
+IPADDR=192.168.0.77 //IP地址 
+NETMASK=255.255.255.0//子网掩码 
+GATEWAY=192.168.0.1 //网关 
+步骤： 
+1、vi /etc/sysconfig/network-scripts/ifcfg-teh0 （也可通过管理工具setup或netconfig命令设置） 
+2、重新启动网络服务service network restart 
+要想和主机连接：还需配置xp主机，在vmware上设置为 host-only模式，xp里修改vmnet1的IP地址为192.168.0.1, 修改Linux centos IP为192.168.0.77 
+共享上网设置：xp里修改第一块虚拟网卡的网络属性为共享internet(属性->高级->钩选“允许其他网络用户通过此计算机的Internet连接来连接”) 会自动把vmnet1改为192.168.0.1,Linux centos就能上网了 
+CentOS Vsftpd配置经过长时间的发展，这里我发表一下个人理解，下面就这就来讲术CentOS Vsftpd配置。调整CentOS Vsftpd配置文件： 
+1.编辑CentOS Vsftpd配置文件前先备份 
+[root@KcentOS5 ~]cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.backup 
+2.编辑主CentOS Vsftpd配置文件Vsftpd.conf 
+[root@KcentOS5 ~]vi /etc/vsftpd/vsftpd.conf 
+这里我将原CentOS Vsftpd配置文件的修改完全记录，凡是修改的地方我都会保留注释原来的配置。其中加入我对每条配置项的认识，对于一些比较关键的配置项这里我做了我的观点，并且原本英语的说明我也不删除，供参考对比用。 
+Example config file /etc/vsftpd/vsftpd.conf 
+The default compiled in settings are fairly paranoid. This sample file 
+loosens things up a bit, to make the ftp daemon more usable. 
+Please see vsftpd.conf.5 for all compiled in defaults. 
+READ THIS: This example file is NOT an exhaustive list of vsftpd options. 
+Please read the vsftpd.conf.5 manual page to get a full idea of vsftpd's 
+capabilities. 
+Allow anonymous FTP? (Beware - allowed by default if you comment this out). 
+anonymous_enable=YES 
+anonymous_enable=NO 
+设定不允许匿名访问 
+
+
+Uncomment this to allow local users to log in. 
+local_enable=YES设定本地用户可以访问。注意：主要是为虚拟宿主用户，如果该项目设定为NO那么所有虚拟用户将无法访问。 
+Uncomment this to enable any form of FTP write command. 
+write_enable=YES 
+设定可以进行写操作。 
+Default umask for local users is 077. You may wish to change this to 022, 
+if your users expect that (022 is used by most other ftpd's) 
+local_umask=022 
+设定上传后文件的权限掩码。 
+Uncomment this to allow the anonymous FTP user to upload files. This only 
+has an effect if the above global write enable is activated. Also, you will 
+obviously need to create a directory writable by the FTP user. 
+anon_upload_enable=YES 
+anon_upload_enable=NO 
+禁止匿名用户上传。 
+Uncomment this if you want the anonymous FTP user to be able to create 
+new directories. 
+anon_mkdir_write_enable=YES 
+anon_mkdir_write_enable=NO 
+禁止匿名用户建立目录。 
+Activate directory messages - messages given to remote users when they 
+go into a certain directory. 
+dirmessage_enable=YES 
+设定开启目录标语功能。 
+Activate logging of uploads/downloads. 
+xferlog_enable=YES 
+设定开启日志记录功能。 
+
+
+Make sure PORT transfer connections originate from port 20 (ftp-data). 
+connect_from_port_20=YES 
+设定端口20进行数据连接。 
+If you want, you can arrange for uploaded anonymous files to be owned by 
+a different user. Note! Using "root" for uploaded files is not 
+recommended! 
+chown_uploads=YES 
+chown_uploads=NO 
+设定禁止上传文件更改宿主。 
+chown_username=whoever 
+You may override where the log file goes if you like. The default is shown 
+below. 
+xferlog_file=/var/log/vsftpd.log 
+设定CentOS Vsftpd配置的服务日志保存路径。注意，该文件默认不存在。必须要手动touch出来，并且由于这里更改了CentOS Vsftpd配置的服务宿主用户为手动建立的Vsftpd。必须注意给与该用户对日志的写入权限，否则服务将启动失败。 
+If you want, you can have your log file in standard ftpd xferlog format 
+xferlog_std_format=YES 
+设定日志使用标准的记录格式。 
+You may change the default value for timing out an idle session. 
+idle_session_timeout=600 
+设定空闲连接超时时间，这里使用默认。将具体数值留给每个具体用户具体指定，当然如果不指定的话，还是使用这里的默认值600，单位秒。 
+
+You may change the default value for timing out a data connection. 
+data_connection_timeout=120 
+设定单次最大连续传输时间，这里使用默认。将具体数值留给每个具体用户具体指定，当然如果不指定的话，还是使用这里的默认值120，单位秒。 
+It is recommended that you define on your system a unique user which the 
+ftp server can use as a totally isolated and unprivileged user. 
+nopriv_user=ftpsecure 
+nopriv_user=vsftpd 
+设定支撑CentOS Vsftpd服务的宿主用户为手动建立的Vsftpd用户。注意，一旦做出更改宿主用户后，必须注意一起与该服务相关的读写文件的读写赋权问题。比如日志文件就必须给与该用户写入权限等。 
+Enable this and the server will recognise asynchronous ABOR requests. Not 
+recommended for security (the code is non-trivial). Not enabling it, 
+however, may confuse older FTP clients. 
+async_abor_enable=YES 
+设定支持异步传输功能。 
+By default the server will pretend to allow ASCII mode but in fact ignore 
+the request. Turn on the below options to have the server actually do ASCII 
+mangling on files when in ASCII mode. 
+Beware that on some FTP servers, ASCII support allows a denial of service 
+attack (DoS) via the command "SIZE /big/file" in ASCII mode. vsftpd 
+predicted this attack and has always been safe, reporting the size of the 
+raw file. 
+ASCII mangling is a horrible feature of the protocol. 
+ascii_upload_enable=YES 
+ascii_download_enable=YES 
+设定支持ASCII模式的上传和下载功能。 
+You may fully customise the login banner string: 
+ftpd_banner=This Vsftp server supports virtual users ^_^ 
+设定CentOS Vsftpd配置的登陆标语。 
+You may specify a file of disallowed anonymous e-mail addresses. Apparently 
+useful for combatting certain DoS attacks. 
+deny_email_enable=YES 
+
+
+(default follows) 
+banned_email_file=/etc/vsftpd/banned_emails 
+You may specify an explicit list of local users to chroot() to their home 
+directory. If chroot_local_user is YES, then this list becomes a list of 
+users to NOT chroot(). 
+chroot_list_enable=YES 
+chroot_list_enable=NO 
+禁止用户登出自己的FTP主目录。 
+(default follows) 
+chroot_list_file=/etc/vsftpd/chroot_list 
+You may activate the "-R" option to the builtin ls. This is disabled by 
+default to avoid remote users being able to cause excessive I/O on large 
+sites. However, some broken FTP clients such as "ncftp" and "mirror" assume 
+the presence of the "-R" option, so there is a strong case for enabling it. 
+ls_recurse_enable=YES 
+ls_recurse_enable=NO 
+禁止用户登陆FTP后使用"ls -R"的命令。该命令会对服务器性能造成巨大开销。如果该项被允许，那么挡多用户同时使用该命令时将会对该服 
+务器造成威胁。 
+When "listen" directive is enabled, vsftpd runs in standalone mode and 
+listens on IPv4 sockets. This directive cannot be used in conjunction 
+with the listen_ipv6 directive. 
+listen=YES 
+设定该CentOS Vsftpd服务工作在StandAlone模式下。顺便展开说明一下，所谓StandAlone模式就是该服务拥有自己的守护进程支持，在ps -A命令下我们将可用看到vsftpd的守护进程名。如果不想工作在StandAlone模式下，则可以选择SuperDaemon模式，在该模式下 vsftpd将没有自己的守护进程，而是由超级守护进程Xinetd全权代理，与此同时，Vsftp服务的许多功能将得不到实现。 
+This directive enables listening on IPv6 sockets. To listen on IPv4 and IPv6 
+sockets, you must run two copies of vsftpd whith two configuration files. 
+Make sure, that one of the listen options is commented !! 
+listen_ipv6=YES 
+pam_service_name=vsftpd 
+
+
+
+设定PAM服务下CentOS Vsftpd配置验证文件名。因此，PAM验证将参考/etc/pam.d/下的vsftpd文件配置。 
+userlist_enable=YES 
+设定userlist_file中的用户将不得使用FTP。 
+tcp_wrappers=YES 
+设定支持TCP Wrappers。 
+KC: The following entries are added for supporting virtual ftp users. 
+以下这些是关于Vsftpd虚拟用户支持的重要CentOS Vsftpd配置项目。默认Vsftpd.conf中不包含这些设定项目，需要自己手动添加配置。 
+guest_enable=YES 
+设定启用虚拟用户功能。 
+guest_username=overlord 
+指定虚拟用户的宿主用户。 
+virtual_use_local_privs=YES 
+设定虚拟用户的权限符合他们的宿主用户。 
+user_config_dir=/etc/vsftpd/vconf 
+设定虚拟用户个人Vsftp的配置文件存放路径。也就是说，这个被指定的目录里，将存放每个Vsftp虚拟用户个性的配置文件，一个需要注意的 
+地方就是这些配置文件名必须和虚拟用户名相同。保存退出。 
+3.建立CentOS Vsftpd配置的日志文件，并更该属主为Vsftpd的服务宿主用户： 
+[root@KcentOS5 ~]touch /var/log/vsftpd.log 
+[root@KcentOS5 ~]chown vsftpd.vsftpd /var/log/vsftpd.log 
+4.建立虚拟用户CentOS Vsftpd配置文件存放路径： 
+[root@KcentOS5 ~]mkdir /etc/vsftpd/vconf/ 
+CentOS vsftp已被广泛应用但是也在不断的更新，这里介绍CentOS vsftp安装设置使用，帮助大家安装更新CentOS vsftp系统。 
+
+
+CentOS vsftp安装： 
+1.安装CentOS Vsftpd服务相关部件： 
+[root@KcentOS5 ~]# yum install vsftpd* 
+2.确认安装PAM服务相关部件： 
+[root@KcentOS5 ~]# yum install pam* 
+开发包，其实不装也没有关系，主要的目的是确认PAM。 
+3.安装DB4部件包： 
+这里要特别安装一个db4的包，用来支持文件数据库。 
+[root@KcentOS5 ~]# yum install db4* 
+CentOS vsftp系统帐户 
+1.建立CentOS vsftp服务的宿主用户： 
+[root@CentOS5 /]#chmod 700 /home/vftpsite 
+[root@KcentOS5 ~]# useradd vsftpd -s /sbin/nologin 
+默认的Vsftpd的服务宿主用户是root，但是这不符合安全性的需要。这里建立名字为vsftpd的用户，用他来作为支持Vsftpd的服务宿主用户。由于该用户仅用来支持Vsftpd服务用，因此没有许可他登陆系统的必要，并设定他为不能登陆系统的用户。[root@CentOS5 /]#useradd –d /home/vftpsite –s /sbin/nologin vftpuser 
+2.建立CentOS vsftp虚拟宿主用户： 
+[root@KcentOS5 nowhere]# useradd overlord -s /sbin/nologin 
+本篇主要是介绍Vsftp的虚拟用户，虚拟用户并不是系统用户，也就是说这些FTP的用户在系统中是不存在的。他们的总体权限其实是集中寄托在一个在系统中的某一个用户身上的，所谓Vsftpd的虚拟宿主用户，就是这样一个支持着所有虚拟用户的宿主用户。由于他支撑了FTP的所有虚拟的用户，那么他本身的权限将会影响着这些虚拟的用户，因此，处于安全性的考虑，也要非分注意对该用户的权限的控制，该用户也绝对没有登陆系统的必要，这里也设定他为不能登陆系统的用户。 
+（这里插一句：原本在建立上面两个用户的时候，想连用户主路径也不打算给的。本来想加上 -d /home/nowhere 的，据man useradd手册上讲 
+述：“ -d, --home HOME_DIR 
+The new user will be created using HOME_DIR as the value for the 
+user鈙 login directory. The default is to append the LOGIN name to 
+BASE_DIR and use that as the login directory name. The directory 
+HOME_DIR does not have to exist but will not be created if it is 
+missing. 
+使用-d参数指定用户的主目录，用户主目录并不是必须存在的。如果没有存在指定的目录的话，那么它将不会被建立”。结果我尝试 -d /home/nowhere 指定到一个并不存在的目录的时候，我KAO！竟然给我自己新建了一个= =＃） 
+【原创】FTP服务时互联网上比较古老的一种应用，至今Interner应用面非常广泛，但令管理员头痛不已的是其用户管理，既多且杂，如何解决这一问题呢？使用MySQL与ProFTP或VsFTP软件结合可以搭建一个高效、稳定且集中管理的FTP服务器。本来就来介绍一下如何搭建一个方便管理的基于MySQL数据库的FTP服务器。 
+
+
+一、软件版本的选择： 
+搭建基于数据库的FTP服务器首先要选择合适的软件。下面就是所选择软件的详细信息： 
+◆Linux版本RHEL5； 
+◆MySQL版本MySQL-standard-5.1.30-1.rhel5.src.rpm; 
+◆FTP服务器proftpd-1.3.2.tar.gz和vsftpd-2.2.1.tar.gz; 
+◆MySQL的PAM验证程序pam_mysql-0.8RC1.tar.gz; 
+需要说明的是，RHEL5安装时自定义安装，“development tools”项必须选择，否则编译调试软件时需要的软件包需另行安装；其次，要确保所安装Linux系统时没有安装MySQL与FTP服务器等软件，如果有则先卸载；再次，ProFTPD与VsFTPD两者不要在同台计算机同时使用，这样会造成意想不到的问题，读者根据自己的需求和软件的具体功能选择其中之一。 
+建立程序安装目录 
+整个安装过程以root用户执行如下命令： 
+#cd /soft/programe 
+#mkdir mysq 
+需要注意目录名称的大小写。 
+#mkdir proftpd 
+#mkdir pam_mods 
+MySQL的安装目录为/soft/program/mysql,ProFTPD的安装目录为/soft/program/proftpd，pam_mysq1.so的安装目录为/soft/program/pam_mods，/storage是一个已经存在的目录，所有的FTP用户上传和下载文件都存放在这里。 
+安装MySQL 
+◆ 增加一个管理MySQL的用户和组： 
+#groupadd mysqlgrp 
+#useradd -g mysqlgrp mysqladm 
+#passwd mysqladm 
+◆ 切换到MySQL-stan-dard-5.1.30-1.rhel5.src.rpm文件所在的目录，执行以下步骤安装： 
+#rpm-ivh MySQL-stan-dard-5.1.30-1.rhel5.src.rpm 
+此条命令解压出mysql-5.1.30.tar.gz文件存放在以下的目录中。 
+#cd /usr/src/redhat/SOURCE 
+#tar zxvf mysqt-5.1.30.tar.gz 
+#cd mysql-5.1.30 
+#./configure Prefix=/soft/program/mysql --with-extra-charsets=all 
+其中,“--prefix=/soft/program/mysql”参数是用来指定Mysql的安装目录，“--with-extra-charsets=all”是用来支持所有的字符集。 
+#make 
+#make install 
+
+
+◆ 初始化数据库 
+#cd /soft/program/mysql/bin 
+#./mysql_install_db 
+◆ 为了安全要修改数据库存放目录的属主信息和访问模式/soft/program/mysqll/var为数据库存放的缺省目录 
+#cd /soft/program/mysql 
+#chown –R mysqladm:mysqlgrp var 
+#chmod -R go-wrx var 
+◆ 修改配置文件 
+#cd /soft/program/mysql/share/mysql 
+#cp my-small.cnf /etc/my.cnf 
+#cd /etc 
+在my.cnf文件中，增加如下内容： 
+[mysql] 
+user=mysqladm #表示用mysqladm 用户启动MySQL# 
+default-character-set=utf8 #表示使用UTF-8字符集，此种字符集通用性较好，也很好的支持中文，当然也可以直接使用GBK。 
+[clent] 
+Default-character-set=utf8 
+◆ 启动 
+启动方式有两种，一种是手工启动，一种是自动启动，其中手工启动的操作如下： 
+#cd /soft/program/mysql/bin 
+#./mysqld_safe& 
+自动启动则需要在/etc/rc.d/rc/local中加入以下的内容，开机自动启动MySQL数据库： 
+If [-x /soft/program/mysql/bin/mysqld_safe]; then 
+install_path_name /bin/mysqld_safe& 
+fi 
+
+
+◆ 修改管理员密码 
+使用如下命令修改数据库密码： 
+#cd /soft/program/mysql/bin 
+#./mysqladmin -h localhost -u root password '123456' 
+上述命令的意思是本机上（-h host）使用的管理数据库的缺省管理账号root。需要注意的事，此root并非Linux系统中的root用户，密码设置为123456. 
+
+安装ProFTPD 
+◆切换到proftpd-1.3.2.tar.gz文件所在的目录，执行以下步骤安装： 
+#tar zxvf proftpd-1.3.2.tar.gz 
+#cd proftpd-1.3.2 
+#./configure--prefix=/soft/program/proftpd --with-modules=mod_sql:mod_sql_mysql:mod_quotatab:mod_quotatab_sql 
+此参数将支持MySQL和Quota模块添加进来。 
+--with-includes=/soft/program/mysql/include/mysql 
+上述参数指定MySQL中include的目录路径。 
+--with-libraries=/soft/program/mysql/lib/mysql 
+此参数指定MySQL中lib的目录路径。 
+#make 
+#make install 
+使用如下命令建立一个用于管理ProFTPD的Linux系统账号和组。 
+#groupadd -g 2009 ftpgroup 
+#useradd -u 2009 –s /bin/false -d /storage -g ftpgroup ftpuser 
+#chown -R ftpuser.ftpgroup /storage 
+#chmod –R go-wrx- /storage 
+#chmod –R u+wrx /storage 
+简单修改ProFTPD配置文件，使之正常运行： 
+#cd /soft/program/proftpd/etc 
+用编辑器打开proftpd.conf,修改一下的内容： 
+#Set the user and group under which the server will run. 
+User ftpuser 
+Group ftpgroup 
+
+
+◆启动ProFTPD 
+启动Proftpd同样有两种方法，即手工启动和自动启动，其中手工启动操作如下： 
+#cd /soft/program/proftpd/sbin/ 
+#./proftpd 
+此时一个基本的FTP服务器已经搭建成，可以进行测试了。需要注意的是，启动时如果出现具有以下信息的错误： 
+error while loading shared libraries:libmysqlclient.so.15:cannot open shared object file:No such file or directory 
+通常的解决办法如下： 
+#cd /etc 
+用文本工具打开ld.so.conf,添加以下的内容/soft/program/mysql/lib/mysql 
+#ldconflg 
+更新ld.so cache file。 
+要让ProFTPD自动启动在/etc/rc.d/rc.local中加入以下的内容，开机即可自启动ProFTPD: 
+/soft/program/proftpd/sbin/proftpd 
+
+
+二、MySQL与ProFTPD组合 
+在MySQL 中建立一个名为ftp的数据库，在该数据库中建立以下的四个表： 
+◆登录FTP服务器的用户表ftpusers，字段信息如下所示，这些字段是必需的，其他字段根据自己的需要添加，参考字段如下： 
+'userid' text NOT NULL #用户登录账号# 
+'passwd' text NOT NULL #用户登录密码# 
+'uid' int(11)NOT NULL default '2009', #与Linux系统账号ftpuser的UID号一致# 
+'gid' int(11)NOT NULL default '2009', #与Linux系统组# 
+ftpgroup 的GID号一致'homedir' text,用户文件上传下载目录，如账号名为abc,此处就填写/storage/abc，'shell' text default ,'/sbin/nologin'这个是用来指定用户是否能登录Linux系统，这里默认的是不能登录。 
+◆FTP用户归属表ftpgroups，字段信息如下所示，关于建立该组的目的将在quotalimits表中说明 
+'groupname' text NOT NULL #组名# 
+'gid' smallint(6) NOT NULL default'0',#组的id号# 
+'memembers' text NOT NULL #成员# 
+◆用于设置磁盘限额相关信息的表quotalimits和quotatallies,这两个表的字段请不要改动，它是与ProFTPD的配置文件紧密联系，quotalimits表的字段信息如下： 
+'name' varchar(30)default NULL, 
+'quota_type' enum('user','group','class','all')NOT NULL default 'user', 
+'per_session' enum('false','true')NOT NULL default'false', 
+'limit_type' enum('soft','hard')NOT NULL default'soft', 
+'bytes_in_avail'float NOT NULL default'0', 
+'bytes_out_avail'float NOT NULL default'0', 
+'bytes_xfer_avail'float NOT NULL default'0', 
+'files_in_avail'int(10) unsigned NOT NULL default'0', 
+'files_out_avail'int(10)unsigned NOT NULL default'0', 
+'files_xfer_avail'int(10)unsigned NOT NULL default'0' 
+需要注意的是，name应该这样理解，既能表示单个用户，也能表示用户组名。如果在quota_type(限额类型)中使用group来认证的话，那就得在这里设置组名，这样整组都具有统一的磁盘限额的特性，当然要在ftpgroups表中插入组记录，并且在member字段中得把用户一个一个的列进去。默认值可以为空NULL。如果为空，则针对所在有quota_type中设置的类型，比如在quota_type中设置为user，就是针对所有ftpusers中的用户起作用，如果是group名，也是对ftpgroups所有组作用。quota_type磁盘限额类型，可以设置为用户，也可以设置为用户组group。如果name写的是用户组，这里就得设置为group来认定。默认为user认证。per_session默认为false.limit_type默认为soft。Bytes_in_avail用户占用空间大小，也就是FTP用户空间容量，单位是byte,默认为0，0是不受限制，以下同理。bytes_out_avail所有下载文件的总和，默认为0。 
+bytes_xfer_avail一个用户上传下载流量总和，默认为0。files_in_avail限制上传文件总和，默认为0。files_out_avail限制下载文件个数总计，默认为0。files_xfer_avail允许下载和上传的文件总和，默认为0。Quotatallies表的字段信息，各字段信息参照quotalimits。配置参考参数如下： 
+
+
+name VARCHAR(30)NOT NULL, 
+quota_type ENUM("user","group","class","all")NOT NULL, 
+bytes_in_used FLOAT NOT NULL, 
+bytes_out_used FLOAT NOT NULL, 
+bytes_xfer_used FLOAT NOT NULL, 
+files_in_used INT UNSIGNED NOT NULL, 
+files_out_used INT UNSIGNED NOT NULL, 
+files_xfer_used INT UNSIGNED NOT NULL 
+此外，在proftpd.conf文件中增加以下的内容： 
+◆数据库连接的信息，ftp是数据库名，localhost是主机名，root是连接数据库的用户名，123456是密码。 
+root 123456 
+◆数据库认证的类型，Plaintext表示明文认证方式 
+SQLAuthTYpes Backend Plaintext 
+◆指定用来做用户认证的表的有关信息 
+SALUserlnfo ftpusers userid passwd uid gid homedir shell 
+SQLGrouplnfo ftpgroups groupname gid members 
+◆校验数据表 
+SQLAuthenticate users groups usersetfast groupsetfast 
+◆如果home目录不存在，则系统会根据ftpusers表中的home字段。 
+新建一个目录： 
+SQLHomedirOnDemand on 
+◆打开磁盘限额引擎 
+QuotaEngine on 
+◆设置磁盘限额 
+QuotaDirectoryTally on 
+
+
+
+
+◆设置磁盘容量显示时的单位 
+QuotaDisplayUnits Mb 
+◆设置磁盘限额日志文件 
+QuotaLog”/usr/local/proftpd/var/quota” 
+◆显示磁盘限额信息 
+ftp登录后可执行quote site quota命令查看当前磁盘使用情况： 
+QuotaShowQuotas on 
+◆设置磁盘限额日志文件 
+QuotaLog”/var/log/quota” 
+◆指定磁盘限额模块使用的数据库信息 
+SQLNamedQuer get-quota-limit SELECT "name,quota_type,bytes_in_avail,bytes_out_avail,bytes_xfer_avail,files_in_avail,files_out_avail,files_xfer_avail FROM quotalimits WHERE name='%{0}'AND quota_type='%{1}'" 
+SQLNamedQuery get-quota-tally SELECT"name,quota_type,bytes_in_used,bytes_out_used,bytes_xfer_used,files_in_used,files_out_used,filed_xfer_used,FROM quotatallies WHERE name='%{0}'AND quota_type ='%{1}" 
+SQLNamedQuery update-quota-tally UPDATE"bytes_in_used =bytes_in_used+%{0},bytes_out_used=bytes_out_used+%{1},bytes_xfer_used=bytes_xfer_used+%{2},files_in_used=files_in_used+%{3},files_out_used=files_out_used+%{4},files_xfer_used =files_xfer_used+%{5} WHERE name='%{6}'AND quota_type = '%{7}'" quotatallies 
+SQLNamedQuery insert-quota-tally INSERT"%{0},%{1},%{2},%{3},%{4},%{5},%{6},%{7}"quotatallies 
+QuotaLimitTable sql:/get-quota-limit 
+QuotaTallyTable sql:/get-quota-tally/update-quota-tally/insert-quota-tally 
+另外，读者还可以在proftpd.conf中添加一些有关超时、限制连接次数、加快连接速度、支持断点传输及安全传输等内容。 
+anon_other_write_enable=YES 
+ascll_upload_enable=YES 
+ascll_download_enable=YES 
+VsFTPD配置文件中还可以进行更多的设置，如磁盘配额、虚拟用户个人目录的建立、性能与负载控制、FTP被动模式断口设置、安全设置等，读者根据自己的需要进一步的完善。 
+◆编辑文件 
+修改/etc/pam.d/ftp中去掉其他的内容，添加以下的内容： 
+#auth 
+auth required/soft/program/pam_mods/pam_mysql.so 
+user=ftpuser passwd=6789host=localhost db=ftp 
+table=ftpusers usercolumn=userid passwdcolumn=passwd crypt=0 
+#account 
+Account required/soft/program/pam_mods/pam_mysql.so 
+User=ftpuser passwd=6789 host=localhost db=ftp table=ftpusers usercolumn=userid passwdcolumn=passwd crypt=0 
+涉及到的参数，只要对应前面数据库的设置就可以明白它们的含义。其中：crypt=0,口令以明文方式(不加密)保存在数据库中，crypt=1,口令使用Unix系统的DES加密方式加密后保存在数据库中；crypt=2,口令经过MySQL的password()函数加密后保存。FTP数据库中ftpusers表的授权用户ftpusers和密码必须正确设置。 
+
+
+◆开机自启动VsFTPD 
+请将vsftpd-2.2.1/xinetd.d/vsftpd文件制到/etc/xinetd.d/中(如果该目录中没有该文件)。此外，还需设置vsftpd.conf中listen和Tcp_Wrappers参数，将其都设置为NO，最后，用ntsysv命令，选中Vsftpd守护进程即可。 
+通过上面的知识，结合Apache、PHP等软件可以开发许多功能，如自动申请主页空间等，而且使用phpMyAdmin可以以Web方式管理MySQL,很容易的添加和删除用户，这样FTP用户管理就轻松多了。

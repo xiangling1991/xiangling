@@ -1,0 +1,119 @@
+#define BOOST_DATE_TIME_SOURCE 		//thread库需要使用date_time库
+#define BOOST_THREAD_NO_LIB //或者BOOST_ALL_NO_LIB
+#include <boost/thread.hpp>
+boost::thread 库需要date_time库的支持
+编译thread库之前需要编译date_time库
+编译命令：
+		bjam -tooset=msvc -with-thread -build-type=complete stdlib=stlport stage
+		
+在Linux/Unix下还需使用-lpthread来链接POSIX线程库
+
+：：需要考虑超时处理
+this_thread::sleep(posix_time::seconds(2))//睡眠2秒钟
+thread还有一个新的时间类型：system_time,与posix_time::ptime相同
+		typedef boost::posix_time::ptime system_time
+		
+		thread 踢狗get_system_time()提取UTC时间
+		
+为了线程同步，我们还有要互斥量
+
+mutex:独占式--------阻塞式
+try_mutex:同上------非阻塞式
+timed_mutex:同上，还提供超时锁定功能
+recursive_mutex:递归式互斥量，可以左慈锁定，还需多次解锁
+recursive_try_mutex:
+recursive_timed_mutex:
+shared_mutex:multiple-reader/single-writer:共享型互斥量，又称读写锁
+
+mutex的用法：
+mutex mu;
+try{
+	mu.lock();
+	cout <<"some operations"<<endl;
+	mu.unlock();
+}
+catch(...)
+{
+	mu.unlock();			//保证解锁互斥量，防止死锁
+}
+
+此时利用try...catch比较麻烦，在thread库中提供了一系列的RAII型的lock_guard类，因此以上写法可以改为：
+	mutex mu;
+	mutex::scoped_lock lock(mu);
+	cout <<"some operations"<<endl;
+	
+	其中scoped_lock和scoped_try_lock分别对应lock()和try_lock()
+	
+	
+线程的启动，一个线程最多可以有九个参数，第一个为执行的函数体指针，其他的是该函数的参数。
+例如：
+	thread(print,ref(1),"example");
+	
+join 和timed_join(time):
+	join :阻塞直到线程结束
+	timed_join：在time的时间里对线程阻塞，当时间到达，无论线程有没有完成，都返回
+	
+分离线程：detach()
+	当不需要操作线程体时，可以使用分离线程。
+	
+
+
+使用bind和function对thread的构造函数参数进行绑定，避免一定的麻烦，例如：
+	thread t(bind(print,ref(x),"hello"));
+	function<void()> f = bind(print,4,"world");
+	thread(f);
+	
+在对线程的操作中，可以使用get_id()来获得线程的线程号。注意：当一个线程变为分离线程时，这个标号将不再标识此线程
+
+其他的操作方式（thread的静态成员）：
+	yield():指示当前线程放弃事件片，允许其他的线程运行
+	sleep():让线程睡眠
+	hardware_concurrency():获得硬件系统可并行的线程数，即CPU数量或者CPU内核数，获取失败返回0
+
+
+线程中断：
+	interrupt()允许正在运行的线程被中断，同时抛出thread_interrupted异常，且不是std::exception || boost::exceptino子类
+	如果不对这个中断进行处理，线程默认终止
+	
+	例如：
+	
+	void to_interrupt(atom_int & x,const string & str)
+	{
+		try{
+			for (int i = 0;i < 5;i++) {
+				this_thread::sleep(posix_time::seconds(1));
+				mutex::scoped_lock lock(io_mu);
+				cout <<str <<++x <<endl;
+			}
+		} catch(thread_interrupted &)
+				cout <<"thread_interrupted"<<endl;
+	}
+	
+	
+	int main()
+	{
+		atom_int x;
+		thread t(to_interrupt,ref(x),"Hello");
+		this_thread::sleep(posix_time::seconds(2));
+		t.interrupt();
+		t.join();
+		
+		return 0;
+	}
+	
+	线程中断点：
+		thread::join();
+		thread::timed_join();
+		condition_variable::wait();
+		condition_variable::timed_wait();
+		condition_variable_any::wait();
+		condition_variable_any::timed_wait();
+		thread::sleep();
+		this_thread::sleep();
+		this_thread::interruption_point();中断标签
+		
+中断的启用和禁用：
+	interruption_enabled():检测线程是否允许中断
+	interruption_requested():检测当前线程是否要求中断
+	类disable_interruption:RAII类型的对象，构造是关闭中断，析构时恢复
+	但restore_interruption可以恢复disable_interruption的中断，且只能在此使用

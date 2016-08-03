@@ -1,0 +1,20 @@
+(defun compress (x)
+  (if (consp x)
+    (compr (car x) 1 (cdr x))
+    x))
+
+(defun compr (el n lst)
+  (if (null lst)
+    (list (n-elts el n))
+    (let ((next (car lst)))
+      (if (eql next el)
+        (compr el (+ n 1) (cdr lst))
+        (cons (n-elts el n)
+              (compr next 1 (cdr lst)))))))
+
+(defun n-elts (el n)
+  (if (> n 1)
+    (list n el)
+    el))
+
+(format t "~A" (compress '(a d b d e e e e a)))

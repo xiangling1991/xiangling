@@ -1,0 +1,14 @@
+32位机加opengl32.lib库
+
+GLFrustum::SetPerspective(float fFov, float fAspect, float fNear, float fFar);
+构建平截头体
+fFov:垂直方向上的视场角度
+fAspect:窗口的宽度与高度的纵横比
+fNear/fFar:近裁剪面和远裁剪面之间的距离
+
+Uniform值：
+要对几何图形进行渲染，我们需要为对象提交属性矩阵，但首先要绑定到我们想要使用的着色器程序上
+并提供程序的Uniform值。
+
+void glLineWidth(GLfloat width);设置线的宽度
+void glPointSize(GLint size);设置点的像素大小  

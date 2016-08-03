@@ -1,0 +1,78 @@
+表格头的显示与隐藏：
+1、tableWidget->verticalHeader()->setVisibe(false);//隐藏列表头
+2、tableWidget->horizontalHeader()->setVisibe(false);//隐藏行表头
+
+
+
+单个选中和多个选中的设置：
+
+tableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);  //设置为可以选中多个目标
+
+该函数的参数还可以是：
+
+QAbstractItemView.NoSelection      不能选择
+
+QAbstractItemView.SingleSelection  选中单个目标
+
+QAbstractItemView.MultiSelection    选中多个目标
+
+QAbstractItemView.ExtendedSelection   QAbstractItemView.ContiguousSelection 的区别不明显，主要功能是正常情况下是单选，但按下Ctrl或Shift键后，可以多选
+
+
+
+.在单元格里加入控件：
+
+QTableWidget不仅允许把文字加到单元格，还允许把控件也放到单元格中。比如，把一个下拉框加入单元格，可以这么做：
+
+QComboBox *comBox = new QComboBox();  
+comBox->addItem("Y");  
+comBox->addItem("N");  
+tableWidget->setCellWidget(0,2,comBox);  
+
+
+
+合并单元格效果的实现：
+
+tableWidget->setSpan(0, 0, 3, 1)  # 其参数为： 要改变单元格的   1行数  2列数     要合并的  3行数  4列数
+
+
+获得单击单元格的内容
+
+通过实现 itemClicked (QTableWidgetItem *) 信号的槽函数，就可以获得鼠标单击到的单元格指针，进而获得其中的文字信息
+
+connect(tableWidget,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),this,SLOT(getItem(QTreeWidgetItem*,int)));
+
+
+
+QTableWidget要调整表格行宽主要涉及以下一个函数
+
+resizeColumnsToContents();                      根据内容调整列宽          
+resizeColumnToContents(int col);               根据内容自动调整给定列宽
+horizontalHeader()->setResizeMode           把给定列设置为给定模式
+主要模式有Stretch和Fixed
+
+
+
+选择多行：
+
+在选择多行中，每次选择的是所有item的计数，要想获得行计数以及行号，可有以下方式：
+1、使用容器，可过滤相同的行
+{
+	QModelIndexList row_list = ui.DEM_table->selectionModel()->selectedIndexes();
+	QMap<int,int> rowMap;
+
+	foreach(QModelIndex index, row_list)
+	{
+		rowMap.insert(index.row(), 0);
+	}
+
+	for (QMap<int, int>::iterator it = rowMap.begin(); it != rowMap.end(); it++)
+		select_rows.push_back(it.key());
+
+	std::sort(select_rows.begin(), select_rows.end(), std::less<int>());
+}
+即可得到行号相量select_rows;
+2、表声明成只能整行选择的：
+
+tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+然后用 if(index.column==0) 只将第一列被选中的格子作为删除条件。也可以实现每行只删除一次的效果。

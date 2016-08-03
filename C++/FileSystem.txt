@@ -1,0 +1,20 @@
+使用boost::filesystem来处理目录问题：
+
+boost::filesystem::path ;
+boost::filesystem::initial_path();初始化路径
+
+boost::filesystem::system_complete(path);获得绝对路径
+boost::filesytem::exists(path);是否存在该路径
+boost::filesystem::is_directory(path);该路径是不是目录
+
+
+path成员：
+const std::string &string();初始化该路径字符串
+std::string root_directory();返回根目录，如果不存在，返回空字符串。
+std::string root_name( )：在给定从文件系统根目录开始的路径的情况下，此例程将返回包含 PATHNAME 的第一个字符的字符串。
+std::string leaf( )：在给定绝对路径名称（例如，/home/user1/file2）的情况下，此例程将提供与文件名称对应的字符串（即 file2）
+std::string branch_path( )：这是与 leaf 互补的例程
+bool empty( )：如果 path 对象包含空字符串（例如 path path1("")），则此例程将返回 True。 
+boost::filesystem::path::iterator：此例程用于遍历 path 的各个元素。请看清单 5 所示的代码。
+
+boost::filesystem_error 类派生自 std::runtime_error 类。库中的函数使用 filesystem_error 异常报告操作错误。与不同的可能错误类型对应，Boost 头文件定义了相应的错误代码。用户代码通常驻留在 try...catch 块内，使用 filesystem_error 异常来报告相关错误消息

@@ -1,0 +1,2 @@
+1:在Centos下安装中文输入法
+	切换至root下，在命令行输入：yum install "@Chinese Support";

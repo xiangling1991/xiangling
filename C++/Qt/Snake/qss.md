@@ -1,0 +1,12 @@
+QTextFrame:BorderStyle:
+    - None
+    - Dotted
+    - Dashed
+    - Solid
+    - Double
+    - DotDash
+    - DotDotDash
+    - Groove
+    - Ridge
+    - Inset
+    - Outset

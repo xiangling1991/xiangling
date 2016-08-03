@@ -1,0 +1,19 @@
+单例模式：
+实现：将需要使用的类使用另一个类（构造函数为保护或私有）的静态函数包装，这样只能利用静态函数的访问方式来访问该类。
+
+class A
+{
+public:
+	void action(){}
+};
+
+class Singlon
+{
+public:
+	static A*(){ if(_instance)return _instance;return new A();}
+private:
+	Singlon(){}	//声明为私有，防止实例化
+	A* _instanece;
+};
+
+A* Singlon::_instance = 0;

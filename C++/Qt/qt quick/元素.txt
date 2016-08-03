@@ -1,0 +1,68 @@
+Rectange:绘制方形，可以加以填充，也可以不填充，此时可以作为一个边框，具有的属性如下：
+width height color(包括各种颜色以及梯色gradient，可以外加透明度) border.width/color（指定边框的宽度/颜色）radius(圆角)...
+
+颜色：
+命名：如red blue green...
+指定RGB：如 "#RRGGBB" "#AARRGGBB"...使用Qt.rgba() Qt.lighter()...来构造,参考Basic Type:color
+属性:Component.onCompleted:console.log(color.r, color.g, color.b, color.a)查看各值color:"red"
+
+渐变色：
+Gradient:使用GradientStop来指定颜色值和位置（0.0~1.0）
+如：gradient:Gradient{
+	Gradient{position:0.0;color:"#202020";}
+	Gradient{position:0.33;color:"blue";}    
+	Gradient{position:1.0;color:"#FFFFFF";}    
+    }
+只有垂直方向，使用rotation:value可以指定水平方向
+
+
+Item：Qt Quick所有可视元素的基类，本身并不绘制任何图形，但他定义了大部分通用图形的属性，如x y widht height anchoring(锚定)以及按键处理...
+Item 的属性特别多，除了前面提到的，还有 scale / smooth / anchors / antialiasing / enabled / visible / state / states / children 等等，详情参考 Qt 帮助文档。
+
+anchoris布局：
+这种方式提供了控件之间相对位置的布局方式，它使每个item有七条不可见的锚线：
+左（left）、水平中心（horizontalCenter）、上（top）、下（bottom）、右（right）、垂直中心（verticalCenter）、基线（baseline）
+以及四边的空白边：上（topMargin）、下（bottomMargin）、左（leftMargin）、右（rightMargin）
+centerin:将一个控件放在另一个控件的中心，fill表示充满某个item
+
+
+z序与透明度：
+z序表明了图元离我们近远程度，其类型是real，数值越大，靠我们越近，item的opacity属性定义了图元的透明度(0.0~1.0)；两者结合可以很好的表达我们所需要的效果。
+
+
+按键处理：
+  Item 通过附加属性 Keys 来处理按键。Keys 对象是 Qt Quick 提供的，专门供 Item 处理按键事件的对象。它定义了很多针对特定按键的信号，比如 onReturnPressed ，还定义了更为普通的 onPressed 和 onReleased 信号，一般地，你可以使用这两个信号来处理按键（请对照 Qt C++ 中的 keyPressEvent 和 keyReleaseEvent 来理解）。它们有一个名字是 event 的 KeyEvent 参数，包含了按键的详细信息。如果一个按键被处理， event.accepted 应该被设置为 true 以免它被继续传递。
+
+
+Text:文本
+text可以是纯文本也可以是富文本，它有 font / text / color / elide / textFormat / wrapMode / horizontalAlignment / verticalAlignment 等等属性，你可以通过这些属性来决定 Text 元素如何显示文本。
+
+Button 属性：（要使用 Button ，需要引入 import QtQuick.Controls 1.1 ）
+checkable 是否可选
+iconName：指定图标，可以通过资源来获得图标名称
+isDefault：指定按钮是否为默认按钮，如果是默认的，用户按 Enter 键就会触发按钮的 clicked() 信号
+pressed：保存按钮的按下状态
+menu：允许给按钮设置菜单，此时按钮可能会出现一个小小的下拉箭头），用户点击按钮时会弹出菜单。默认是 null 。
+action：允许按钮的action，action 可以定义按钮的 checked ， text ，tooltip 等属性。默认是 null 
+activeFocusOnPress ，指定当用户按下按钮时是否获取焦点，默认是 false 。
+style 属性用来定制按钮的风格，与它配套的有一个 ButtonStyle 类，允许你定制按钮的背景。
+
+ButtonStyle：（要使用 ButtonStyle 需要引入 QtQuick.Controls.Styles 1.1 ）:是Button中style的属性
+ ButtonStyle 类有 background 、 control 、 label 三个属性。我们通过重写 background 来定制一个按钮。 control 属性指向应用 ButtonStyle 的按钮对象，你可以用它访问按钮的各种状态。 label 属性代表按钮的文本，如果你看它不顺眼，也可以替换它。
+ Button {
+                    text: "Quit";
+                    anchors.centerIn: parent;
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            implicitWidth: 70;
+                            implicitHeight: 25;
+                            border.width: control.pressed ? 2 : 1;
+                            border.color: (control.hovered || control.pressed) ? "green" : "#888888";
+                        }
+                    }
+                }
+
+Image：显示图片，只要是 Qt 支持的，比如 JPG 、 PNG 、 BMP 、 GIF 、 SVG 等都可以显示。它只能显示静态图片，对于 GIF 等格式，只会把第一帧显示出来。如果你要显示动画，可以使用 AnimateSprite 或者 AnimateImage 。
+显示图片除了默认的，还可以设置填充模式来确定伸缩，fillMode 属性可以设置图片的填充模式，它支持 Image.Stretch（拉伸） 、 Image.PreserveAspectFit（等比缩放） 、 Image.PreserveAspectCrop（等比缩放，最大化填充 Image ，必要时裁剪图片） 、 Image.Tile（在水平和垂直两个方向平铺，就像贴瓷砖那样） 、 Image.TileVertically（垂直平铺） 、 Image.TileHorizontally（水平平铺） 、 Image.Pad（保持图片原样不作变换） 等模式。
+ Image 默认会阻塞式的加载图片，如果图片很大，可以使用异步模式，saynchronous为true开启异步加载模式。这种模式下 Image 使用一个线程来加载图片，而你可以在界面上显示一个等待图标之类的小玩意儿来告诉用户它需要等会儿。然后当 status（枚举值） 的值为 Image.Ready 时再隐藏加载等候界面。
+比较强悍的是， Image 支持从网络加载图片。它的 source 属性类型是 url ，可以接受 Qt 支持的任意一种网络协议，比如 http 、 ftp 等。而当 Image 识别到你提供的 source 是网络资源时，会自动启用异步加载模式。Image 的 progress（取值范围 0.0 至 1.0 ），status（枚举值）都会适时更新，你可以根据它们判断何时结束你的加载等候提示界面。

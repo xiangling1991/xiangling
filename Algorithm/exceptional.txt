@@ -1,0 +1,110 @@
+1、临时对象
+	string FindAddr( list<Employee> l, string name )
+	{
+		for( list<Employee>::iterator i = l.begin();
+			 i != l.end();
+			 i++) 
+		{
+			if( *i == name)
+				return (*i).addr;
+		}
+		return "";
+	}
+
+(1):两参数应该传入常量引用(const reference)。
+(2):i应该使用先增而不是后增，先增效率更高，因为在后增时，对象不但必须自己递增，而且还要返回包含递增前之值的临时对象。
+(3):这里没有体现Employee类，但如果想让它行得通，则要么来一个转换成string的操作，要么通过一个转换构造函数来得到一个string，然而这两种方法都会产生临时对象，从而导致对string或者Employee的operator=调用。（时刻注意因为参数转换操作而产生的隐藏的临时对象，一个避免它的好办法就是尽可能显示(explicit)的使用构造函数(constructor)）。
+(4):遵循"单入口/单出口"(single-entry/single-exit)规则，绝不要在一个函数里面写多个return语句。
+(5):绝对绝对不要返回对局部对象的引用。
+	
+	string FindAddr( const list<Employee>& l, const string& name)
+	{
+		string addr;
+		for( list<Employee>::const_iterator i = l.begin();
+			 i != l.end();
+			 ++i)
+		{
+			if((*i).name == name){
+				addr = (*i).addr;
+				break;
+			}
+		}
+		return addr;
+	}
+
+2、class设计
+(1):尽量重复运用程式码，特别是标准程式库。
+(2):小心隐式转换带来的隐式暂时物件，解决办法就是尽可能让constructors成为explicit，并且避免写出转换运算子。
+(3):尽量以by const&(而非by value)的方式来传递物件。
+(4):尽量写"a op=b;"而不要写成"a = a op b;"(op代表任何运算子)。
+(5):如果你提供了某个运算子的标准版(例如:operator+)，请同事为它提供一份assignment版(例如 operator+=)并且以后者为基础来实现前者。同时也请保存op和op=之间的自然关系。
+(6):以下准则决定一个运算子应该是member function或者应该是个nonmember function:
+	:: 一元运算子应该是members
+	:: = () [] 和->必须是members
+	:: assignment 版的运算子(+= -= /= *= 等等)都必须是members
+	:: 其他所有的二元运算子都应该是nonmembers
+(7):总是在operator<<和operator>>函式中传回stream reference
+(8):为了一致性，请总是以前置式累加运算子为本，实作出后置式累加运算子。否则你的使用者会很惊讶其结果，并往往不高兴。
+
+3、虚拟函式
+(1):让base class的解构式成为virtual（除非你确定不会有人企图透过一个pointer-to-base 去删除一个derived object）。
+(2):当你要提供一个函式，其名称与继承而来的函式同名时，如果你不想因此遮掩了继承而来的函式，请以using declaration来突围。
+(3):绝不要在改写虚拟函式的过程中改变预设参数（如果预设参数不一致，其参数是根据物件的静态型别(static type ，即基类)来决定，而其它部分则是根据子类的部分，也就是根据动态型别(dynamic tpye)来决定）。
+
+4、classes之间的关系
+(1):绝不要使用public inheritance，除非你要模塑的是真正的liskov IS-A和WORKS-LIKE-A的关系。所有被改写（overridden）的member function不能要求更多也不能承诺更少。（在描述一个[以某物为基础实作出](is implemented in terms of)的关系，这种关系在c++中应该以private inheritance 或 membership 来完成）
+(2):绝不要以public inheritance复用(reuse)base class内的程式码；public inheritance是为了被复用被那些[以多型方式运用base objects]的程式码复用。
+(3):当我们希望模塑出"is implemented in terms of"的关系，请选择membership/aggregation而不是使用inheritance.只有在绝对必要的情况下才使用private inheritance ，也就是说当你需要存取protected members或是需要改写虚拟函式时。绝对不要只为了重复运用程式码而使用public inheritance。
+(4):为了广泛运用classes，最好使用[编译防火墙]手法(compiler-firewall idiom,或称为Pimpl Idiom)来遮掩实作细节。使用一个不透明指标(此指标指向一个已宣告而未定义的class)，将之宣告为"struct XxxxImpl* pimpl_;",用来存放private members(包括state variables 和 member functions)。例如"class Map
+				 {
+				 private:
+				 	struct MapImpl* impl_;
+				 };"。
+{
+	[Pimpl(编译期防火墙):主要作用是解开类的使用接口和实现的耦合]
+	这里我们考虑的是头文件，如果头文件“失火”又当如何呢？头文件是不能直接编译的，它包含于源文件中，并作为源文件的一部分被一起编译。
+	这也就是说，如果源文件S.cpp使用了C.hpp，那么class C的（接口部分的）变动将无可避免的导致S.CPP的重新编译。但是作为class C的实现部分的class X却完全不应该导致S.cpp的重新编译。
+	因此，我们需要把class X隔绝在C.hpp之外。这样，每个使用class C的源文件都与class X隔离开来（与class X不在同一个编译单元）。但是，既然class C使用了class X的对象来作为它的实现部分，就无可避免的要“依赖”于class X。只不过，这个“依赖”应该被描述为：“class C的实现部分依赖于class X”，而不应该是“class C的用户使用接口部分依赖于class X”。
+}
+(5):尽量形成内聚(cohesion)。总是尽力让每一段，每一个模组，每一个类别，每一个函式有单一而又明确的任务。
+
+5、使用/滥用继承
+a.template <class T>
+  class MyList
+  {
+  public:
+  	bool Insert(const T&, size_t index);
+  	T Access(size_t index) const;
+  	size_t Size() const;
+  private:
+  	T* buf_;
+  	size_t bufsize_;
+  };
+
+  template <class T>
+  class MySet1 : public MyList<T>
+  {
+  public:
+  	bool Add(const T&);//calls Insert()
+  	T Get(size_t index) const;//calls Access()
+  	using MyList<T>::Size; //using declaration
+  	//...
+  };
+
+  templabe <class T>
+  class MySet2
+  {
+  public:
+  	bool Add(const T&);//calls impl_.Insert()
+  	T Get(size_t index) const;//calls impl_.Access()
+  	size_t Size() const;//calls impl_.Size();
+  	//...
+  private:
+  	MyList<T> impl_;//containment
+  };
+
+(1):尽量采用 aggregation(又名"composition","layering","HAS-A","deletation")来取代inheritance.当我们准备模塑IS-IMPLEMENTED-IN-TERMS-OF关系时，尽量采用aggregation而不要使用inheritance。
+(2):总是确定public inheritance 用以模塑IS-A和WORKS-LIKE-A的关系，并符合Liskov Substitution Principle(LSP 里氏替换原理)。所有被改写的member functions 都必须[不要求更多，也不承诺更少]。
+(3):绝对不要为了重复使用base class 中的码而使用public inheritance。public inheritance的目的是为了被既有的码以多型方式(多态 polymorphically)重复运用base objects。
+
+

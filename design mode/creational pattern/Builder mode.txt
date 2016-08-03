@@ -1,0 +1,53 @@
+创建者模式：
+在这种模式中，我们不需要关心所创建的对象的具体细节，只需要知道所构建的对象分为哪几个步骤，由此得出一个对象的抽象类，并有该对象的具体类来实现，最后设计一个该对象的领导者来创建该对象。前面的称为Builder，后者称为BuilderDirector
+
+class Bulider
+{
+public:
+	virtual void CreateA() = 0;
+	virtual void CreateB() = 0;
+	virtual void CreateC() = 0;
+	...
+protected:
+	Builder();
+};
+
+class Child_Builder_1:public Builder
+{
+public:
+	void CreateA();
+	void CreateB();
+	void CreateC();
+	...
+};
+
+class Child_Builder_2:public Builder
+{
+public:
+	void CreateA();
+	void CreateB();
+	void CreateC();
+	...
+};
+
+class Director
+{
+public:
+	Director(Builder* b){_b = b;}
+	void construct(){
+		_b->CreateA();
+		_b->CreateB();
+		_b->CreateC();
+		...
+	}
+private:
+	Builder* _b;
+};
+
+int main()
+{
+	Director *dir = new Director(new Child_Builder_1());
+	dir->contruct();
+}
+
+此种模式可以防止在构造某一对象时缺少必要的部分。

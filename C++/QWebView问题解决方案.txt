@@ -1,0 +1,3 @@
+使用QWebView时，会出现图片无法显示等问题，解决如下：
+1、将Qt下的plugins/imagformats(可能有plugins/icongenines)拷贝到工程目录下。
+2、在html中加载图片时用qrc中的图片更靠谱

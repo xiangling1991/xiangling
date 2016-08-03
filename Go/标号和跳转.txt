@@ -1,0 +1,22 @@
+标号由一个标识和冒号构成，可以作为goto 、break 、continue语句的目标。
+
+eg:
+	L:for i < n {
+		switch i {
+			case 5:
+				break L
+		}
+	}
+note:
+	goto直接跳到标号给定的语句执行。他不能跳过变量的声明，也不能跳进一个块的内部
+
+eg：
+	goto L //error
+	v := 4
+	L:
+	if n % 2 == 1 {
+		goto L1
+	}
+	for n > 0 {
+		L1: fn()
+	}

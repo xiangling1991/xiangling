@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plugin>
+  <id>otitan.ui.band_recombine</id>
+  <version>1.0</version>
+  <library>otitan.ui.band_recombine.dll</library>
+  <name>影像波段重排</name>
+  <category>交互插件.插件管理器</category>
+  <owner>航天泰坦</owner>
+  <description></description>
+  <type>ribbon.command</type>
+  <ribbon>
+	<command>
+    		<title>影像波段重排</title>
+    		<style>Under</style>
+			<checkable>Yes</checkable>
+    		<tooltip>影像波段重排</tooltip>
+    		<icon>band_recombine.png</icon>
+    		<group>影像分析.通用</group>
+	</command>
+  </ribbon>
+</plugin>

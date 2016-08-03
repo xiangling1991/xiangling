@@ -1,0 +1,72 @@
+1 iota 在每次的const赋值时都重置为0
+
+2 比较浮点数大小
+    import "math"
+    
+    func isEqual(f1,f2,p float64) {
+        return math.Fdim(f1,f2) < p
+    }
+
+m
+切片的创建;
+1 make(type,num)
+    myslice := make([]int,5)
+2 make(type,num,count):创建一个初始元素个数为5的数组切片，初始值为0,预留空间为10个
+    myslice := make([]int,5,10)
+    
+3 直接创建
+    myslice := []int{1,2,3}
+4 cap: 查看切片存储容量
+  len：查看切片实际存储大小
+  append:内置函数，用于在切片后添加内容，如果append(slice,slice1...)，后面的省略号表示将slice1所有的内容传进slice
+  copy(dest,src),出入dest的个数随dest的容量变化(即当前dest内部的数据个数)
+
+map:
+1 map[key] value
+    map1 := make(map[key] value) 
+    map2 := make(map[key] value,num),num表示初始容量
+2 dlete(map,key)
+
+控制型语句：
+switch后面的表达式不是必须的，可以如下：
+    switch {
+        case 0 <= num || num >= 4:
+        default:
+    }
+
+channel:
+    是go语言在语言级别提供的goroutine间的通信方式，可以使用channel在两个或多个goroutine间传递消息
+    1.语法
+        var chanName chan ElementType :::=>>var count chan int
+        :::=>>var m map[string] chan bool==>>map中的元素是bool型的channel
+        channel 定义:var := make(chan int)===<>使用内置make函数
+        a.将数据写入channel:::=>ch <-value
+        在向channel中写入数据时会导致程序阻塞，直到其他goroutine从这个channel中读取数据。
+        从channel中读取数据的语法：
+            value := <-ch
+        b.如果之前尚未向channel中写入数据，此时去读取数据，也会发生阻塞，直到有数据写入
+    2.select
+        语法同switch类型,使用case 来进行选择，而且case中必须是一个IO操作，如下：
+        select {
+            case <-chan1:
+                //如果chan1成功的读取到数据，则进行该case处理语句
+            case chan2 <- 1:
+                //如果成功向chan2写入数据，则进行该case处理语句
+            default:
+                //如果上面都没成功，则进入default处理流程
+        }
+    3.通信超时,主要是为了解决通信过程中的可能出现的死锁问题
+    可以使用select来解决，如下：
+    timeout := make(chan bool,1)
+    go func() {
+        time.Sleep(1)
+        timeout <- true
+    }
+    select {
+        case <- ch:
+        //从ch中读到数据
+        case <- timeout:
+        //一直没有从ch中读取到数据，但从timeout中读到
+    }
+        
+go func() {}(param) :::=>>>func可以创建临时的函数，匿名函数，后面的param是作为该函数的参数

@@ -1,0 +1,9 @@
+标准文档流(Normal Document Flow):
+即没有使用特定的定位方式的情况下默认的布局方式
+
+定位属性：
+定位是通过position来实现
+static：默认属性，使用标准流布局
+absolute：绝对定位
+relative：相对定位
+fixed：固定定位，于绝对定位类似

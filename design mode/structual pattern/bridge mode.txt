@@ -1,0 +1,51 @@
+桥接模式：Bridge
+目的：将抽象部分和实现部分分离，使他们可以独立的变化
+设计两个虚基类，用于功能的扩展
+class Abstractimp;
+
+class Abstract
+{
+public:
+	~Abstract();
+
+	virtual void Operation() = 0;
+protected:
+	Abstract();
+};
+
+class Abs_A :public Abstract
+{
+public:
+	Abs_A(Abstractimp* imp){ _imp = imp; }
+	void Operation(){_imp->Operation();}
+private:
+	Abstractimp* _imp;
+};
+
+class Abstractimp
+{
+public:
+	Abstractimp();
+	~Abstractimp();
+
+	virtual void Operation() = 0;
+};
+
+class Abs_imp :public Abstractimp
+{
+public:
+	Abs_imp(){}
+
+	void Operation(){std::cout << "operation" << std::endl;}
+};
+
+int main()
+{
+	Abs_imp * abs = new Abs_imp();
+	Abs_A a(abs);
+	a.Operation();
+
+	return 0;
+};
+
+在设计中，涉及对象可能有多个因素影响而改变的时候，可以使用bridge模式

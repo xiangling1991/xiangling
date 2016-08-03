@@ -1,0 +1,21 @@
+每个元素都可以看成是一个盒子，有一个边框(border)，边框有内边距(padding)和外边距(margin)。
+padding-border-marg -->>盒子模型(Box)
+
+每个部分都有top  buttom  left  right 四个位置组成，可自由设置各部分的属性。
+
+
+body{
+	background-image:url("example.img");
+	background-repeat:repeat-x;  重复的坐标
+}
+
+对于margin和padding可给不固定的1 、2  、3 、 4个参数，分别为：
+1：top buttom left right 为同一值
+2：top buttom为第一值，left right为第二值
+3：top 为第一值 left right为第二值 buttom为第三值
+4：分别赋值
+
+
+div 和 span 的区别：
+div称为"块级"元素，即是一个盒子，占有一块矩形空间
+span标记称为"行内"元素，不占有独立空间，仅表示一个范围

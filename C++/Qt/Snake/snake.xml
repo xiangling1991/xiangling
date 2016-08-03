@@ -1,0 +1,34 @@
+<snake>
+    <snake_record>
+        <bodys>
+        <body>
+            <pos_x>40</pos_x>
+            <pos_y>50</pos_y>
+        </body>
+        <body>
+            <pos_x>50</pos_x>
+            <pos_y>50</pos_y>
+        </body>
+        </bodys>
+        <gen_info>
+            <grade>70</grade>
+            <rank>5</rank>
+            <state>RUN</state>
+        </gen_info>
+        <food>
+            <pos_x>80</pos_x>
+            <pos_y>80</pos_y>
+        </food>
+    </snake_record>
+    
+    <music_record>
+        <music_list>
+            <music>1.mp3</music>
+            <music>2.wav</music>
+        </music_list>
+        <cur_music>1.mp3</cur_music>
+        <cur_time>00:02:23</cur_time>
+        <cur_state>Music_Stop</cur_state>
+        <cur_volume>40</cur_volume>
+    </music_record>
+</snake>

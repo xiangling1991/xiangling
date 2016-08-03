@@ -1,0 +1,49 @@
+工厂模式和抽象工厂模式的区别：
+应用的范围不同：抽象工厂模式范围更广
+包含关系不同：工厂模式是为一类对象提供创建接口，抽象工厂模式可以为不同类对象创建接口，可以	      可以说抽象工厂模式是工厂模式的集合
+
+class abs_prod_a
+{
+public:
+	abs_prod(){}
+	virtual void action() = 0;
+};
+
+class prod_a:public abs_prod_a
+{
+public:
+	void action(){}
+};
+
+class abs_prod_b
+{
+public:
+	virtual void action() = 0;
+};
+
+class prod_b:public abs_prod_b
+{
+public:
+	void action(){}
+};
+
+class Factory
+{
+public:
+	virtual abs_prod_a* createProA() = 0;
+	virtual abs_prod_b* createProB() = 0;
+};
+
+class Factory_1:public Factory
+{
+public:
+	abs_prod_a* createProA(){ return new prod_a();}
+	abs_prod_b* createProB() {return new prod_b();}
+};
+
+class Factory_2:public Factory
+{
+public:
+	abs_prod_a* createProA(){ return new prod_a();}
+	abs_prod_b* createProB() {return new prod_b();}
+};

@@ -1,0 +1,35 @@
+QWebView 类属于QWebKit类别,可以用于网页的浏览，其函数load和setHtml可以加载网页。
+注意点：
+	在Qt与QWebView的交互中，常使用其信号linkClicked(QUrl）或者使用函数page()获得当前的QWebPage，
+	再使用linkClicked(QUrl)，来获取所点击的链接，从而进行对链接的操作。当时常这种方式会出现莫名其妙的
+	问题，比如无法接收来自该函数的信号，导致连接失败，在Qt 文档中，可知，默认情况下，link的发射的信号
+	没有被代理，所有触发的信号都被QWebPage本身所处理，也就无法利用槽来接收来自linkClicked的信号了，
+	但我们可以设置代理，函数
+	void	setLinkDelegationPolicy(LinkDelegationPolicy policy)；
+	typedef enum {
+		QWebPage::DontDelegateLinks,//默认值
+		QWebPage::DelegateExternalLinks,
+		QWebPage::DelegateAllLinks,
+		}LinkDelegationPolicy
+
+	设置policy为DelegateExternalLinks时，但点击的链接为本地链接时，将触发linkClicked信号，即可继续
+	以后的操作。
+	QUrl(string)
+	string分别为不同类型的link,包括以下种类：
+		http:超文本传输协议资源
+		https:用安全套接字层传送的超文本传输协议
+		ftp:文件传输协议
+		mailto:电子邮件地址
+		ldap:轻型目录访问协议搜索
+		file:当地电脑或网上分享的文件
+		news:usenet新闻组
+		gopher:Gopher协议
+		telnet:Telnet协议
+			
+		使用时例:file:///地址;
+		
+		在使用QWebView::load(QUrl)时，使用的是绝对路径，如果是相对路径的话，
+		可以先将相对路径进行转换，方法：
+		QString path = QApplication::applicationFilePath();
+		再获取path的父路径，将该文件与父路径组合，即得到觉得路径。
+		
